@@ -4,12 +4,10 @@ from standardisation import to_tensor, standardisation
 
 class DiamondModel(nn.Module):
     
-    X_train, X_test, y_train, y_test = split_dataset(del_outliers(preprocessing()))
-    
-    def __init__(self):
+    def __init__(self, X_train):
         super().__init__()
 
-        self.layer_1 = nn.Linear(in_features=to_tensor(standardisation()).shape[1], out_features=15)
+        self.layer_1 = nn.Linear(in_features=X_train.shape[1], out_features=15)
         self.layer_2 = nn.Linear(in_features=15, out_features=12)
         self.layer_3 = nn.Linear(in_features=12, out_features=8)
         self.layer_4 = nn.Linear(in_features=8, out_features=5)
