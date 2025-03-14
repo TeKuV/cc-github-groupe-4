@@ -46,7 +46,7 @@ def del_outliers(data):
 
         data[i][data[i] > Maxi] = Maxi
         data[i][data[i] < Mini] = Mini
-        
+    return data
         
 def split_dataset(data):
     #Separation X et Y et transformation en numpy array
