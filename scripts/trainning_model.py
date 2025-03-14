@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
-from torch.optim import optim 
+import torch.optim as optim
 from DiamondModel import DiamondModel
-
-model = DiamondModel()
 
 
 # Supposons que vous avez X_train_t, y_train_t, X_test_t, y_test_t, et votre modèle
@@ -14,7 +12,7 @@ def accuracy_fn(y_true, y_pred):
     acc = (correct / len(y_pred)) * 100
     return acc
 
-def train(X_train_t, y_train_t, X_test_t, y_test_t, model):
+def train(X_train_t, y_train_t, X_test_t, y_test_t, model, epochs = 10000, step=1000):
         
     # Fonction de perte (CrossEntropyLoss pour la classification multiclasse)
     loss_fn = nn.CrossEntropyLoss()
@@ -29,7 +27,7 @@ def train(X_train_t, y_train_t, X_test_t, y_test_t, model):
     test_loss_list = []
 
     torch.manual_seed(42)
-    epochs = 10000
+    
     for epoch in range(epochs):
         
         model.train()
@@ -37,6 +35,9 @@ def train(X_train_t, y_train_t, X_test_t, y_test_t, model):
         y_pred = torch.argmax(y_logits, dim=1)  # Récupère l'indice de la classe avec la probabilité maximale
         
         # Calcul de la perte/exactitude
+        y_train_t = y_train_t.long()
+        y_test_t = y_test_t.long()
+        
         loss = loss_fn(y_logits, y_train_t)
         acc = accuracy_fn(y_train_t, y_pred)
         
@@ -61,7 +62,7 @@ def train(X_train_t, y_train_t, X_test_t, y_test_t, model):
             test_acc = accuracy_fn(y_test_t, test_pred)
             
             # print out what's happening every 10 epoch's
-            if epoch % 100 == 0:
+            if epoch % step == 0:
                 epoch_count.append(epoch)
                 train_acc_list.append(acc)
                 test_acc_list.append(test_acc)
@@ -70,7 +71,7 @@ def train(X_train_t, y_train_t, X_test_t, y_test_t, model):
                 
                 print(f'Epoch:{epoch}, | Loss:{loss:.5f} | Acc={acc:.2f}% | Test Loss:{test_loss:.5f} | Test Acc:{test_acc:.2f}%')
                 
-        return model
+    return model
     
 # save the model
 def save_model(model, path):

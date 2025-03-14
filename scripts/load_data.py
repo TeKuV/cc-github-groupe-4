@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from standardisation import to_tensor, standardisation
 
 def preprocessing(path='data/diamonds.csv'):
     data = pd.read_csv(path)
@@ -60,10 +61,15 @@ def split_dataset(data):
     
     return X_train, X_test, y_train, y_test
 
-def pipeline(path='../data/diamonds.csv'):
+def preprocessing_pipeline(path='../data/diamonds.csv'):
     data = preprocessing(path)
     del_outliers(data)
     X_train, X_test, y_train, y_test = split_dataset(data)
     
-    return X_train, X_test, y_train, y_test
+    X_train_t = to_tensor(standardisation(X_train))
+    X_test_t = to_tensor(standardisation(X_test))
+    y_train_t = to_tensor(y_train)
+    y_test_t = to_tensor(y_test)
+    
+    return X_train_t, X_test_t, y_train_t, y_test_t 
     
