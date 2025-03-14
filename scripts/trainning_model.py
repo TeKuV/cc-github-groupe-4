@@ -1,10 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from DiamondModel import DiamondModel
-
-
-# Supposons que vous avez X_train_t, y_train_t, X_test_t, y_test_t, et votre modèle
 
 # Fonction d'exactitude modifiée pour la classification multiclasse
 def accuracy_fn(y_true, y_pred):

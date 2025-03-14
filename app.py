@@ -4,36 +4,13 @@ import torch
 import torch.nn as nn
 import pandas as pd
 import numpy as np
+from scripts.DiamondModel import DiamondModel
 
 # Charger le modèle sauvegardé
-MODEL_PATH = "modeleANN.pth"  # Remplace par le vrai chemin
+MODEL_PATH = "model_final.pth"
 
-class diamonds_model(nn.Module):
-    def __init__(self):
-        super().__init__()
+model = DiamondModel(9)
 
-        self.layer_1 = nn.Linear(in_features=9, out_features=15)
-        self.layer_2 = nn.Linear(in_features=15, out_features=12)
-        self.layer_3 = nn.Linear(in_features=12, out_features=8)
-        self.layer_4 = nn.Linear(in_features=8, out_features=5)
-        self.relu = nn.ReLU()
-    def forward(self, x):
-        x = self.relu(self.layer_1(x))
-        x = self.relu(self.layer_2(x))
-        x = self.relu(self.layer_3(x))
-        x = self.layer_4(x)
-        return x
-    
-model = diamonds_model()
-
-# Définition du modèle
-class LinearRegression(nn.Module):
-    def __init__(self, input_size):
-        super(LinearRegression, self).__init__()
-        self.linear = nn.Linear(input_size, 1)
-
-    def forward(self, x):
-        return self.linear(x)
 
 # Charger le modèle complet
 model = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
