@@ -7,7 +7,7 @@ import numpy as np
 from scripts.DiamondModel import DiamondModel
 
 # Charger le modèle sauvegardé
-MODEL_PATH = "model_final.pth"
+MODEL_PATH = "./models/model_final.pth"
 
 model = DiamondModel(9)
 
