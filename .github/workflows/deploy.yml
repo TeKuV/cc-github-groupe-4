@@ -23,10 +23,16 @@ jobs:
       # Étape 2 : Configure Python 3.11.5 dans l'environnement GitHub Actions 
       # pour installer et exécuter du code Python.
 
+    - name: Install Hugging Face Hub
+      run: pip install huggingface_hub
+      # Étape 2.1 : Installer manuellement huggingface_hub pour les commandes subsequentes.
+
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt
-      # Étape 3 : Installe les dépendances listées dans requirements.txt 
+        pip install huggingface_hub
+      # Étape 3 : Installe les dépendances listées dans requirements.txt
+      # Double check huggingface_hub availability
       # (notamment huggingface_hub, Streamlit, etc.).
 
     - name: Push to Hugging Face Hub
