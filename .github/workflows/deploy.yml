@@ -1,30 +1,41 @@
 name: Deploy to Hugging Face
 
 on:
+  # Déclenche le workflow sur chaque push dans la branche "main".
   push:
     branches: ["main"]
 
 jobs:
   deploy:
+    # Utilise un environnement Ubuntu pour exécuter les étapes du workflow.
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
+      # Étape 1 : Récupère (clone) le code de la branche actuelle 
+      # afin que les étapes suivantes puissent y accéder.
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.11.5"
+      # Étape 2 : Configure Python 3.11.5 dans l'environnement GitHub Actions 
+      # pour installer et exécuter du code Python.
 
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt
+      # Étape 3 : Installe les dépendances listées dans requirements.txt 
+      # (notamment huggingface_hub, Streamlit, etc.).
 
     - name: Push to Hugging Face Hub
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
+        # Étape 4 : Utilise la librairie huggingface_hub pour :
+        #  1) Créer un Space (si inexistant) 
+        #  2) Uploader le contenu du repo vers ce Space
         python -c "from huggingface_hub import HfApi, create_repo; \
         api = HfApi(token='$HF_TOKEN'); \
 
@@ -33,12 +44,16 @@ jobs:
             repo_type='space',
             space_sdk='streamlit',
             exist_ok=True,
-            private=False 
-        )
-
+            private=False
+        ); \
         api.upload_folder(
             folder_path='.', 
             repo_id='TeKuV/cc-github-group4', 
             repo_type='space', 
             commit_message='Auto-deploy from GitHub Actions'
         )"
+      # - HF_TOKEN est un secret stocké dans votre dépôt GitHub (Settings > Secrets and variables > Actions).
+      # - "repo_id" est le nom de votre Space sur Hugging Face.
+      # - "space_sdk='streamlit'" précise que ce Space est un projet Streamlit.
+      # - "upload_folder" envoie tous les fichiers du dossier actuel (.) vers le Space.
+      # - "commit_message" décrit la mise à jour effectuée.
