@@ -3,7 +3,7 @@ name: Deploy to Hugging Face
 on:
   # Déclenche le workflow sur chaque push dans la branche "main".
   push:
-    branches: ["main"]
+    branches: ["main", "nevermind"]
 
 jobs:
   deploy:
